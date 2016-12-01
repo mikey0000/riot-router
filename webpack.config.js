@@ -17,7 +17,8 @@ var config = {
     libraryTarget: "umd"
   },
   externals: {
-    "riot": "riot"
+    "riot": "riot",
+    "riot-route": "riot-route"
   },
   module: {
     loaders: [{

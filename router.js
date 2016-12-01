@@ -1,4 +1,5 @@
 var riot = require('riot');
+var rRoute = require('riot-route');
 var extend = require('extend');
 var error = console && console.error || function() {};
 
@@ -26,6 +27,7 @@ class Router {
     this.handler = new InitialRoute();
     this.current = new Context("").response;
     this.process = this.process.bind(this);
+    this.base = rRoute.base;
   }
 
   route(handler) {
@@ -86,7 +88,7 @@ class Router {
   }
 
   navigateTo(uri) {
-    riot.route(uri);
+    rRoute(uri);
   }
 
   processInterceptors(context, preInterceptors, postInterceptors) {
@@ -109,14 +111,14 @@ class Router {
   }
 
   start() {
-    riot.route.parser(customRiotParser);
-    riot.route(this.process);
-    riot.route.start();
+    rRoute.parser(customRiotParser);
+    rRoute(this.process);
+    rRoute.start();
     this.exec();
   }
 
   exec() {
-    riot.route.exec(this.process);
+    rRoute.exec(this.process);
   }
 
 }
@@ -411,9 +413,9 @@ riot.tag('route', '<router-content></router-content>', function(opts) {
 
   this.__router_tag = 'route';
   this.level = this.calculateLevel(this);
-  riot.router.on('route:updated', this.updateRoute);
+    riot.router.on('route:updated', this.updateRoute);
   this.on('unmount', function() {
-    riot.router.off('route:updated', this.updateRoute);
+      riot.router.off('route:updated', this.updateRoute);
     this.unmountTag();
   }.bind(this));
   this.on('mount', function() {
